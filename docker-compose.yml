@@ -1,0 +1,16 @@
+proxy:
+  image: jwilder/nginx-proxy
+  ports:
+     - "80:80"
+  volumes:
+     - /var/run/docker.sock:/tmp/docker.sock:ro
+
+frontend:
+  build: frontend/
+  ports:
+     - "8000"
+  volumes:
+     - frontend/:/data/www
+  environment:
+     VIRTUAL_HOST: www.mysite.com
+     VIRTUAL_PORT: 8000
