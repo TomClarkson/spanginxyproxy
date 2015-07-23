@@ -5,9 +5,32 @@ proxy:
   volumes:
      - /var/run/docker.sock:/tmp/docker.sock:ro
   environment:
-     DEFAULT_HOST: www.mysite.com
+     DEFAULT_HOST: www.candycrm.com
 
 frontend:
   build: frontend/
   environment:
-     VIRTUAL_HOST: www.mysite.com
+     VIRTUAL_HOST: www.candycrm.com
+
+php:
+ image: php:5.5-fpm
+ ports:
+    - "9000:9000"
+
+backend:
+  build: backend/
+  links:
+      - php
+  environment:
+      VIRTUAL_HOST: api.candycrm.com
+
+# nginxphp:
+#   build: nginxphp/
+#   command: /sbin/my_init --enable-insecure-key
+#   ports:
+#       - 8080
+#   volumes:
+#       - ./nginxphp/www:/var/www
+#   environment:
+#       - VIRTUAL_HOST=api.candycrm.com
+#       - VIRTUAL_PORT=8080
