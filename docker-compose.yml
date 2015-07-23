@@ -1,36 +1,23 @@
 proxy:
   image: jwilder/nginx-proxy
   ports:
-     - "80:80"
+    - "80:80"
+  links:
+    - frontend
+    - php
   volumes:
-     - /var/run/docker.sock:/tmp/docker.sock:ro
+    - /var/run/docker.sock:/tmp/docker.sock:ro
   environment:
-     DEFAULT_HOST: www.candycrm.com
+    DEFAULT_HOST: www.candycrm.com
 
 frontend:
   build: frontend/
   environment:
-     VIRTUAL_HOST: www.candycrm.com
+    VIRTUAL_HOST: www.candycrm.com
 
 php:
- image: php:5.5-fpm
- ports:
-    - "9000:9000"
-
-backend:
-  build: backend/
-  links:
-      - php
+  image: php:5.6-apache
+  volumes:
+    - backend/public/:/var/www/html/
   environment:
-      VIRTUAL_HOST: api.candycrm.com
-
-# nginxphp:
-#   build: nginxphp/
-#   command: /sbin/my_init --enable-insecure-key
-#   ports:
-#       - 8080
-#   volumes:
-#       - ./nginxphp/www:/var/www
-#   environment:
-#       - VIRTUAL_HOST=api.candycrm.com
-#       - VIRTUAL_PORT=8080
+    VIRTUAL_HOST: api.candycrm.com

@@ -5,3 +5,5 @@ WORKDIR /www/data
 ADD ./public /www/data
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
